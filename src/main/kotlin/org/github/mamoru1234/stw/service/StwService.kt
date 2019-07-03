@@ -47,8 +47,7 @@ class StwService(
         return cloudDockerComposeDstDir
     }
 
-    fun startCloud() {
-        val cloudDockerComposeSrcDir = getFile(getWorkingDir(), "cloud-docker-compose")
+    fun startCloud(cloudDockerComposeSrcDir: File) {
         val cloudDockerComposeDstDir = getFile(getWorkingDir(), "stw-compose")
         cloudDockerComposeDstDir.mkdirs()
         if (!cloudDockerComposeSrcDir.exists()) {
