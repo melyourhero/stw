@@ -14,6 +14,8 @@ import org.github.mamoru1234.stw.utils.getWorkingDir
 import org.github.mamoru1234.stw.utils.nonEmpty
 import java.io.File
 
+const val RUNNING_STATE = "running"
+
 class StwService(
     private val mapper: ObjectMapper,
     private val userConfig: UserConfig,
@@ -57,7 +59,25 @@ class StwService(
         val command = "docker-compose -p \"riotcloud\" up -d"
         shellCommand(command, cloudDockerComposeDstDir, env)
         val cloudApiClient = getCloudApiClient("http://localhost:8080", mapper)
+        cloudHealthFix()
         cloudApiClient.healthCheck().execRetry(20000)
+    }
+
+    fun cloudHealthFix() {
+        val healthSleep = userConfig.getProperty(CLOUD_HEALTH_SLEEP, "5000").toLong()
+        log.info("Cloud health fix started")
+        while (true) {
+            log.debug("Checking cloud health...")
+            val cloudFailedContainers = dockerClient.list()
+                .filter { it.networkNames.contains("riotcloud_default") && it.state != RUNNING_STATE }
+            if (cloudFailedContainers.isEmpty()) {
+                break
+            }
+            dockerClient.restart(cloudFailedContainers)
+            log.debug("Waiting next round.")
+            Thread.sleep(healthSleep)
+        }
+        log.debug("Check success")
     }
 
     fun removeCloud(cloudComposeDir: File) {
