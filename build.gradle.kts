@@ -21,7 +21,6 @@ repositories {
 }
 
 dependencies {
-//    compile group: 'com.squareup.retrofit2', name: 'retrofit', version: '2.6.0'
     implementation(group = "com.squareup.retrofit2", name = "retrofit", version = retrofitVersion)
     implementation(group = "com.squareup.retrofit2", name = "converter-jackson", version = retrofitVersion)
     implementation(group = "commons-io", name = "commons-io", version = "2.6")
@@ -31,6 +30,7 @@ dependencies {
     implementation(group = "com.fasterxml.jackson.dataformat", name = "jackson-dataformat-yaml", version = jacksonVersion)
     implementation(group = "com.github.ajalt", name = "clikt", version = "2.1.0")
     implementation(group = "io.github.microutils", name = "kotlin-logging", version = "1.6.26")
+    implementation(group = "org.apache.commons", name = "commons-csv", version = "1.5")
     implementation(kotlin("stdlib-jdk8"))
 }
 

@@ -1,11 +1,17 @@
 package org.github.mamoru1234.stw.ext
 import mu.KotlinLogging
+import okhttp3.MediaType
+import okhttp3.MultipartBody
 import retrofit2.Call
 import retrofit2.Response
+import java.io.File
+import okhttp3.RequestBody
+
+
 
 private val log = KotlinLogging.logger {}
 
-fun <T>Call<T>.execRetry(delay: Int): Response<T> {
+fun <T>Call<T>.execRetry(delay: Int = 20000): Response<T> {
     while (true) {
         try {
             val response = this.clone().execute()
@@ -17,4 +23,12 @@ fun <T>Call<T>.execRetry(delay: Int): Response<T> {
         Thread.sleep(delay.toLong())
         log.debug("Retrying call")
     }
+}
+
+fun createPartFromFile(partName: String, file: File, type: MediaType): MultipartBody.Part {
+    val requestFile = RequestBody.create(
+        type,
+        file
+    )
+    return MultipartBody.Part.createFormData(partName, file.name, requestFile)
 }
