@@ -63,8 +63,8 @@ class CloudComposeService(
     }
 
     private fun processCassandra(cassandraNode: ObjectNode) {
-        val cassandraXmx = userConfig.getProperty("cloud.cassandra.xmx")
-        val cassandraXms = userConfig.getProperty("cloud.cassandra.xms")
+        val cassandraXmx = userConfig.getProperty("cloud.cassandra.xmx", "2048m")
+        val cassandraXms = userConfig.getProperty("cloud.cassandra.xms", "512m")
         processEnv(cassandraNode) {
             env ->
             env["JVM_OPTS"] = "-Xmx$cassandraXmx -Xms$cassandraXms"

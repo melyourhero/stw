@@ -26,7 +26,7 @@ fun main(args: Array<String>) {
     val userConfig = UserConfig()
     val dockerClient = DockerClient(mapper)
     val cloudComposeService = CloudComposeService(yamlMapper, userConfig)
-    val stwService = StwService(userConfig, cloudComposeService, dockerClient)
+    val stwService = StwService(mapper, userConfig, cloudComposeService, dockerClient)
     val downCommand = DownCommand(stwService)
     val buildCommand = BuildCommand(userConfig, stwService)
     val upCommand = UpCommand(stwService)

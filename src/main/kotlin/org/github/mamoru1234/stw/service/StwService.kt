@@ -1,10 +1,13 @@
 package org.github.mamoru1234.stw.service
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import com.github.ajalt.clikt.core.PrintMessage
 import mu.KotlinLogging
 import org.apache.commons.io.FileUtils.*
+import org.github.mamoru1234.stw.client.cloud.getCloudApiClient
 import org.github.mamoru1234.stw.client.docker.DockerClient
 import org.github.mamoru1234.stw.ext.environment
+import org.github.mamoru1234.stw.ext.execRetry
 import org.github.mamoru1234.stw.ext.saveWait
 import org.github.mamoru1234.stw.ext.shellCommand
 import org.github.mamoru1234.stw.utils.getWorkingDir
@@ -12,6 +15,7 @@ import org.github.mamoru1234.stw.utils.nonEmpty
 import java.io.File
 
 class StwService(
+    private val mapper: ObjectMapper,
     private val userConfig: UserConfig,
     private val cloudComposeService: CloudComposeService,
     private val dockerClient: DockerClient
@@ -52,6 +56,8 @@ class StwService(
         val env = mapOf("PUBLIC_HOST" to userConfig.machineIP)
         val command = "docker-compose -p \"riotcloud\" up -d"
         shellCommand(command, cloudDockerComposeDstDir, env)
+        val cloudApiClient = getCloudApiClient("http://localhost:8080", mapper)
+        cloudApiClient.healthCheck().execRetry(20000)
     }
 
     fun removeCloud(cloudComposeDir: File) {
