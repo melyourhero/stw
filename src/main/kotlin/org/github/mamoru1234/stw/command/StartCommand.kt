@@ -13,11 +13,10 @@ import org.github.mamoru1234.stw.service.UserConfig
 import org.github.mamoru1234.stw.utils.getWorkingDir
 import org.github.mamoru1234.stw.utils.validateDir
 
-class BuildCommand(
+class StartCommand(
     private val userConfig: UserConfig,
     private val stwService: StwService
-): CliktCommand(name = "build", help = "Build cloud sources") {
-    private val withClean by option(help = "Should execute clean").flag(default = false)
+): CliktCommand(name = "start", help = "Start cloud env") {
     private val cloudPath by option(help = "Cloud sources path")
         .file(folderOkay = true, exists = true)
         .defaultLazy {
@@ -29,7 +28,19 @@ class BuildCommand(
         .file(exists = false, fileOkay = false)
         .defaultLazy { FileUtils.getFile(getWorkingDir(), "cloud-docker-compose") }
 
+    private val cloudComposeDir by option(help = "Directory with processed cloud compose")
+        .file(exists = false, fileOkay = false)
+        .defaultLazy { FileUtils.getFile(getWorkingDir(), "stw-compose") }
+
+    private val skipBuild by option(help = "Skip build from sources step").flag(default = false)
+    private val withClean by option(help = "With clean step").flag(default = false)
+
+
     override fun run() {
-        stwService.buildCloudSources(cloudPath, cloudComposeBuildDir, withClean)
+        stwService.removeCloud(cloudComposeDir)
+        if (!skipBuild) {
+            stwService.buildCloudSources(cloudPath, cloudComposeBuildDir, withClean)
+        }
+        stwService.startCloud(cloudComposeBuildDir, cloudComposeDir)
     }
 }

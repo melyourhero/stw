@@ -11,11 +11,15 @@ import org.github.mamoru1234.stw.utils.getWorkingDir
 class UpCommand(
     private val stwService: StwService
 ): CliktCommand(name = "up", help = "Start local cloud") {
-    private val cloudComposeDir by option(help = "Directory with build cloud compose")
+    private val cloudComposeBuildDir by option(help = "Directory with build cloud compose")
         .file(exists = false, fileOkay = false)
         .defaultLazy { FileUtils.getFile(getWorkingDir(), "cloud-docker-compose") }
 
+    private val cloudComposeDir by option(help = "Directory with processed cloud compose")
+        .file(exists = false, fileOkay = false)
+        .defaultLazy { FileUtils.getFile(getWorkingDir(), "stw-compose") }
+
     override fun run() {
-        stwService.startCloud(cloudComposeDir)
+        stwService.startCloud(cloudComposeBuildDir, cloudComposeDir)
     }
 }

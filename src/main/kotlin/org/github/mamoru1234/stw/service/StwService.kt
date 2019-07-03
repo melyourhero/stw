@@ -24,7 +24,7 @@ class StwService(
     ) {
     private val log = KotlinLogging.logger {}
 
-    fun buildCloudSources(cloudPathFile: File, withClean: Boolean): File {
+    fun buildCloudSources(cloudPathFile: File, cloudDockerComposeDstDir: File, withClean: Boolean): File {
         val userName = userConfig.readValue(REGISTRY_USER, "Registry user", ::nonEmpty)
         val userPass = userConfig.readValue(REGISTRY_PASS, "Registry pass", ::nonEmpty)
         val env = mapOf(
@@ -39,16 +39,17 @@ class StwService(
         shellCommand("./gradlew buildDockerImage -PforceDockerBuildImages", cloudPathFile, env)
         shellCommand("./gradlew prepareCloudDockerFiles", cloudPathFile, env)
         val cloudDockerComposeSrcDir = getFile(cloudPathFile, "riot-cloud", "build", "docker-compose")
-        val cloudDockerComposeDstDir = getFile(getWorkingDir(), "cloud-docker-compose")
-        if (cloudDockerComposeDstDir.isDirectory) {
+        if (cloudDockerComposeDstDir.exists()) {
             deleteDirectory(cloudDockerComposeDstDir)
         }
         copyDirectory(cloudDockerComposeSrcDir, cloudDockerComposeDstDir)
         return cloudDockerComposeDstDir
     }
 
-    fun startCloud(cloudDockerComposeSrcDir: File) {
-        val cloudDockerComposeDstDir = getFile(getWorkingDir(), "stw-compose")
+    fun startCloud(cloudDockerComposeSrcDir: File, cloudDockerComposeDstDir: File) {
+        if (cloudDockerComposeDstDir.exists()) {
+            deleteDirectory(cloudDockerComposeDstDir)
+        }
         cloudDockerComposeDstDir.mkdirs()
         if (!cloudDockerComposeSrcDir.exists()) {
             throw PrintMessage("Cloud compose src dir doesn't exists")
@@ -62,7 +63,7 @@ class StwService(
         cloudApiClient.healthCheck().execRetry(20000)
     }
 
-    fun cloudHealthFix() {
+    private fun cloudHealthFix() {
         val healthSleep = userConfig.getProperty(CLOUD_HEALTH_SLEEP, "5000").toLong()
         log.info("Cloud health fix started")
         while (true) {
@@ -91,7 +92,7 @@ class StwService(
         }
     }
 
-    private fun shellCommand(command: String, path: File, env: Map<String, String> = emptyMap()) {
+    fun shellCommand(command: String, path: File, env: Map<String, String> = emptyMap()) {
         ProcessBuilder()
             .environment(env)
             .directory(path)
