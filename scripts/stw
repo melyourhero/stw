@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+PROJECT_PATH=""
+
+if [[ -z "$PROJECT_PATH" ]]; then
+    echo "ERROR: change PROJECT_PATH"
+    exit -1
+fi
+
+java -jar "$PROJECT_PATH/build/libs/stw-1.0-SNAPSHOT.jar" $@

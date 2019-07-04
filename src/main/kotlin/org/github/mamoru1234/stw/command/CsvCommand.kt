@@ -37,7 +37,7 @@ class CsvCommand(
         .defaultLazy { UUID.randomUUID().toString() }
     private val forceDevice by option(help = "Force start new device")
         .flag(default = false)
-    private val cloudUrl by option()
+    private val cloudUrl by option(help = "Cloud URL to use for atom")
         .defaultLazy { userConfig.readValue(CLOUD_MQTT_URL, "Cloud mqtt bridge url", ::nonEmpty) }
     private val adapterPort by option(help = "Adapter port to use")
         .defaultLazy { getRandomPort().toString() }

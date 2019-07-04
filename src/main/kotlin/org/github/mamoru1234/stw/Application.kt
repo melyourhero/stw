@@ -15,7 +15,7 @@ import org.github.mamoru1234.stw.service.StwService
 import org.github.mamoru1234.stw.service.UserConfig
 import org.github.mamoru1234.stw.service.device.DeviceService
 
-class Main: NoRunCliktCommand()
+class Stw: NoRunCliktCommand()
 
 fun main(args: Array<String>) {
     val mapper = jacksonObjectMapper()
@@ -35,7 +35,7 @@ fun main(args: Array<String>) {
     val startCommand = StartCommand(userConfig, stwService)
     val csvCommand = CsvCommand(dockerClient, deviceService, csvAdapterClient, userConfig)
     val upCommand = UpCommand(stwService)
-    Main().subcommands(
+    Stw().subcommands(
         downCommand, buildCommand, upCommand,
         updateCommand, startCommand, csvCommand
     ).main(args)

@@ -5,5 +5,7 @@ Useful utility to setup work environment
 * Build:``
 ./gradlew build 
 ``
-* move to location``cd build/libs``
-* review help ``-jar stw-1.0-SNAPSHOT.jar --help``
+* copy wrapper script ``./scripts/stw`` to ``~/bin`` (create if absent)
+* ``chmod +x ~/bin/stw`` add executable flag
+* Replace inside script PROJECT_PATH value with absolute path of this project
+* try ``stw --help``
