@@ -32,3 +32,14 @@ const val MACHINE_IP = "machine.ip"
  */
 const val CLOUD_HEALTH_SLEEP = "cloud.health.sleep"
 
+const val ATOM_IMAGE = "atom.image"
+const val ATOM_DISABLE_ANALYTICS = "atom.disableAnalytics"
+
+const val CLOUD_MQTT_URL = "csvAdapter.cloudUrl"
+const val CLOUD_MAX_FILE_SIZE = "cloud.maxFileSize"
+
+const val CSV_ADAPTER_IMAGE = "csv.adapter.image"
+const val CSV_ADAPTER_DATA_PATH = "csv.adapter.data.path"
+
+const val CASSANDRA_XMX = "cloud.cassandra.xmx"
+const val CASSANDRA_XMS = "cloud.cassandra.xms"

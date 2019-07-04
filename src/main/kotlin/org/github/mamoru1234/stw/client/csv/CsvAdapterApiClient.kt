@@ -23,10 +23,11 @@ interface CsvAdapterApiClient {
 
     @POST("/files")
     @Multipart
+    @Streaming
     fun uploadFile(
         @Part data: MultipartBody.Part
     ): Call<String>
 
     @POST("/devices")
-    fun attachDevice(body: AttachDeviceRequest): Call<Unit>
+    fun attachDevice(@Body body: AttachDeviceRequest): Call<Unit>
 }

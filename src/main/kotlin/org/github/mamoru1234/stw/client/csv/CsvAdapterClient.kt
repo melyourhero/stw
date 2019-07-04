@@ -9,9 +9,6 @@ import org.apache.commons.csv.CSVFormat
 import org.apache.commons.csv.CSVParser
 import org.github.mamoru1234.stw.ext.createPartFromFile
 import org.github.mamoru1234.stw.ext.execRetry
-import org.riot.platform.client.csv.calculateDataRange
-import org.riot.platform.client.csv.hasTextValue
-import org.riot.platform.client.csv.hasTimestampColumn
 import java.io.File
 import java.io.FileReader
 

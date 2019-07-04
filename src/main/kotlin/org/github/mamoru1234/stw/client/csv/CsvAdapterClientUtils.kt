@@ -1,8 +1,8 @@
-package org.riot.platform.client.csv
+package org.github.mamoru1234.stw.client.csv
 
 import com.fasterxml.jackson.databind.node.ObjectNode
+import com.github.ajalt.clikt.core.PrintMessage
 import org.apache.commons.csv.CSVRecord
-import org.riot.platform.exception.StwException
 import java.lang.NumberFormatException
 
 fun calculateDataRange(records: List<CSVRecord>, columnNumber: Int): Pair<Double, Double> {
@@ -12,7 +12,7 @@ fun calculateDataRange(records: List<CSVRecord>, columnNumber: Int): Pair<Double
             return@fold Math.min(acc.first, value) to Math.max(acc.second, value)
 
         } catch (e: NumberFormatException) {
-            throw StwException("Invalid csv record at: ${record.recordNumber}:$columnNumber [$record]")
+            throw PrintMessage("Invalid csv record at: ${record.recordNumber}:$columnNumber [$record]")
         }
     }
 }

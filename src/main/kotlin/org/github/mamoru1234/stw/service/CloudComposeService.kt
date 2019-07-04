@@ -63,8 +63,8 @@ class CloudComposeService(
     }
 
     private fun processCassandra(cassandraNode: ObjectNode) {
-        val cassandraXmx = userConfig.getProperty("cloud.cassandra.xmx", "2048m")
-        val cassandraXms = userConfig.getProperty("cloud.cassandra.xms", "512m")
+        val cassandraXmx = userConfig.getProperty(CASSANDRA_XMX, "2048m")
+        val cassandraXms = userConfig.getProperty(CASSANDRA_XMS, "512m")
         processEnv(cassandraNode) {
             env ->
             env["JVM_OPTS"] = "-Xmx$cassandraXmx -Xms$cassandraXms"
@@ -83,12 +83,12 @@ class CloudComposeService(
                 logger.info { "Adding user env from file: ${cloudEnvFile.path}" }
                 env.putAll(userEnv)
             }
-            val disableAtomAnalytics = userConfig.getProperty("atom.disableAnalytics", "n") == "y"
+            val disableAtomAnalytics = userConfig.getProperty(ATOM_DISABLE_ANALYTICS, "n") == "y"
             if (disableAtomAnalytics) {
                 logger.debug("Disabling analytics on atom")
                 env["RIOT_CLOUD_ENABLE_ANALYTICS_ON_EDGE"] = "false"
             }
-            val fileSizeLimit = userConfig.getProperty("cloud.maxFileSize", "100MB")
+            val fileSizeLimit = userConfig.getProperty(CLOUD_MAX_FILE_SIZE, "100MB")
             logger.debug("Cloud file limit is: $fileSizeLimit")
             env["SPRING_SERVLET_MULTIPART_MAX_FILE_SIZE"] = fileSizeLimit
             env["SPRING_SERVLET_MULTIPART_MAX_REQUEST_SIZE"] = fileSizeLimit
