@@ -25,14 +25,17 @@ class StwService(
     private val log = KotlinLogging.logger {}
 
     fun buildCloudSources(cloudPathFile: File, cloudDockerComposeDstDir: File, withClean: Boolean): File {
-        val userName = userConfig.readValue(REGISTRY_USER, "Registry user", ::nonEmpty)
-        val userPass = userConfig.readValue(REGISTRY_PASS, "Registry pass", ::nonEmpty)
-        val env = mapOf(
-            "ORG_GRADLE_PROJECT_registry.username" to userName,
-            "ORG_GRADLE_PROJECT_registry.password" to userPass,
-            "ORG_GRADLE_PROJECT_nexusUsername" to userName,
-            "ORG_GRADLE_PROJECT_nexusPassword" to userPass
-        )
+        log.warn("For now for authorization in registry use ~/.gradle/gradle.properties")
+//        FIXME check correct usages of env
+//        val userName = userConfig.readValue(REGISTRY_USER, "Registry user", ::nonEmpty)
+//        val userPass = userConfig.readValue(REGISTRY_PASS, "Registry pass", ::nonEmpty)
+//        val env = mapOf(
+//            "ORG_GRADLE_PROJECT_registry.username" to userName,
+//            "ORG_GRADLE_PROJECT_registry.password" to userPass,
+//            "ORG_GRADLE_PROJECT_nexusUsername" to userName,
+//            "ORG_GRADLE_PROJECT_nexusPassword" to userPass
+//        )
+        val env = emptyMap<String, String>()
         if (withClean) {
             shellCommand("./gradlew clean", cloudPathFile, env)
         }
