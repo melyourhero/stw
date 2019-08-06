@@ -37,8 +37,7 @@ class DeviceService(
         }
         val atomImage = userConfig.readValue(ATOM_IMAGE, "Enter atom image", ::nonEmpty)
         val atomOptions = DockerRunOptions(imageName = userConfig.getDockerImageName(atomImage)).apply {
-//            execOptions = "--cloudURL=$cloudUrl --orgId=$orgId --nodeId=$nodeId"
-            execOptions = "--orgId=$orgId --nodeId=$nodeId"
+            execOptions = "--cloudURL=$cloudUrl --orgId=$orgId --nodeId=$nodeId"
             network = "riotcloud_default"
             name = "atom_$nodeId"
         }
