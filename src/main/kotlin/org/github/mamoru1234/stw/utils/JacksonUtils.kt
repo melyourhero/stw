@@ -6,7 +6,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode
 import com.github.ajalt.clikt.core.PrintMessage
 
 private fun getNode(node: JsonNode, path: Array<String>): JsonNode = path.fold(node) { cur, property ->
-    return@fold cur.get(property) ?: throw PrintMessage("Cannot get by path: $path")
+    return@fold cur.get(property) ?: throw PrintMessage("Cannot get by path: ${path.joinToString(".")}")
 }
 
 fun getArrayNode(node: JsonNode, path: Array<String>): ArrayNode {

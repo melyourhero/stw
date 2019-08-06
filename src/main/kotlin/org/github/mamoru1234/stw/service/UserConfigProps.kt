@@ -32,6 +32,8 @@ const val MACHINE_IP = "machine.ip"
  */
 const val CLOUD_HEALTH_SLEEP = "cloud.health.sleep"
 
+const val DOCKER_REGISTRY_URL = "docker.registry.url"
+
 const val ATOM_IMAGE = "atom.image"
 const val ATOM_DISABLE_ANALYTICS = "atom.disableAnalytics"
 

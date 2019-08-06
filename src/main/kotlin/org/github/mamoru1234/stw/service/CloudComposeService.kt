@@ -28,7 +28,7 @@ class CloudComposeService(
         val composeNode = yamlMapper.readTree(FileUtils.getFile(srcComposeDir, "docker-compose-public.yml"))
         val cassandraNode = getObjectNode(composeNode, arrayOf("services", "cassandra"))
         processCassandra(cassandraNode)
-        processCloud(getObjectNode(composeNode, arrayOf("services", "cloud")))
+        processCloud(getObjectNode(composeNode, arrayOf("services", "cloud-master-node")))
         ensureProxy(composeNode)
         FileUtils.copyFile(
                 FileUtils.getFile(srcComposeDir, ".env"),

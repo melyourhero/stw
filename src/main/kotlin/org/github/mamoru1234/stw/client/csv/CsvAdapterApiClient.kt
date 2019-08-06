@@ -18,7 +18,7 @@ interface CsvAdapterApiClient {
             return retrofit.create(CsvAdapterApiClient::class.java)
         }
     }
-    @GET("GET /files")
+    @GET("/files")
     fun getAllFiles(): Call<List<JsonNode>>
 
     @POST("/files")

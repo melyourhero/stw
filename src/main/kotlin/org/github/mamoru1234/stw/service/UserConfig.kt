@@ -4,6 +4,7 @@ import com.github.ajalt.clikt.output.TermUi
 import mu.KotlinLogging
 import org.apache.commons.io.FileUtils.getFile
 import org.github.mamoru1234.stw.utils.getWorkingDir
+import org.github.mamoru1234.stw.utils.nonEmpty
 import java.io.FileInputStream
 import java.io.FileWriter
 import java.net.InetSocketAddress
@@ -60,13 +61,18 @@ class UserConfig {
             }
             userProperties[name] = userValue
             saveProperties()
-            return userMessage
+            return userValue
         }
     }
 
     fun readValue(name: String, userMessage: String, validate: ((value: String) -> Boolean)?): String {
         return getProperty(name)
             ?: prompt(name, userMessage, validate)
+    }
+
+    fun getDockerImageName(imageSuf: String): String {
+        val registry = readValue(DOCKER_REGISTRY_URL, "Enter docker registry", ::nonEmpty)
+        return "$registry/$imageSuf"
     }
 
     private fun saveProperties() {

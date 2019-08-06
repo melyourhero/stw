@@ -5,10 +5,7 @@ import mu.KotlinLogging
 import org.github.mamoru1234.stw.client.docker.DockerClient
 import org.github.mamoru1234.stw.client.docker.DockerContainerInfo
 import org.github.mamoru1234.stw.client.docker.DockerRunOptions
-import org.github.mamoru1234.stw.service.ATOM_IMAGE
-import org.github.mamoru1234.stw.service.CLOUD_MAX_FILE_SIZE
-import org.github.mamoru1234.stw.service.CSV_ADAPTER_IMAGE
-import org.github.mamoru1234.stw.service.UserConfig
+import org.github.mamoru1234.stw.service.*
 import org.github.mamoru1234.stw.utils.nonEmpty
 
 class DeviceService(
@@ -39,8 +36,9 @@ class DeviceService(
             throw PrintMessage("Atom with same params is already running")
         }
         val atomImage = userConfig.readValue(ATOM_IMAGE, "Enter atom image", ::nonEmpty)
-        val atomOptions = DockerRunOptions(imageName = atomImage).apply {
-            execOptions = "--cloudURL=$cloudUrl --orgId=$orgId --nodeId=$nodeId"
+        val atomOptions = DockerRunOptions(imageName = userConfig.getDockerImageName(atomImage)).apply {
+//            execOptions = "--cloudURL=$cloudUrl --orgId=$orgId --nodeId=$nodeId"
+            execOptions = "--orgId=$orgId --nodeId=$nodeId"
             network = "riotcloud_default"
             name = "atom_$nodeId"
         }
@@ -58,10 +56,9 @@ class DeviceService(
         val atomIp = atomInfo.ips["riotcloud_default"]
         logger.debug("Runnning adapter for atom: ${atomInfo.name}, atomIP: $atomIp")
         val fileSizeLimit = userConfig.getProperty(CLOUD_MAX_FILE_SIZE, "100MB")
-        val adapterPort = port
-        val adapterOptions = DockerRunOptions(imageName).apply {
+        val adapterOptions = DockerRunOptions(imageName = userConfig.getDockerImageName(imageName)).apply {
             this.name = "csv_$nodeId"
-            this.ports += adapterPort to "45678"
+            this.ports += port to "45678"
             this.network = "riotcloud_default"
             this.env += "DATALOADER_ATOM_HOST" to atomIp!!
             this.env += "SPRING_SERVLET_MULTIPART_MAX_FILE_SIZE" to fileSizeLimit

@@ -27,6 +27,9 @@ class CsvAdapterClient(private val mapper: ObjectMapper) {
             .execRetry()
             .body() ?: throw PrintMessage("Empty body received")
         val mappings = generateMappings(data)
+        logger.info { "File id: $fileId" }
+        logger.debug("Mappings:")
+        logger.debug(mapper.writeValueAsString(mappings))
         val request = AttachDeviceRequest(
             deviceId = deviceId,
             fileId = fileId,
@@ -34,7 +37,6 @@ class CsvAdapterClient(private val mapper: ObjectMapper) {
             columnMappings = mappings,
             delay = if (hasTimestampColumn(mappings)) null else delay
         )
-        logger.info("Attaching device...")
         client.attachDevice(request).execRetry()
     }
 
