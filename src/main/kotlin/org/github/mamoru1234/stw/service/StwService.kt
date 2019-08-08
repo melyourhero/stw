@@ -92,6 +92,14 @@ class StwService(
         }
     }
 
+    fun removeDevices() {
+        val containers = dockerClient.list()
+        dockerClient.removeAll(containers.filter {
+            val targetName = it.name.startsWith("atom_") || it.name.startsWith("csv_")
+            targetName && it.networkNames.contains("riotcloud_default")
+        })
+    }
+
     fun shellCommand(command: String, path: File, env: Map<String, String> = emptyMap()) {
         ProcessBuilder()
             .environment(env)
