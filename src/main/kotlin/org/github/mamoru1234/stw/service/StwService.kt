@@ -100,6 +100,11 @@ class StwService(
         })
     }
 
+    fun setBranch(cloudPathFile: File, branchName: String) {
+        shellCommand("git fetch", cloudPathFile)
+        shellCommand("git checkout $branchName", cloudPathFile)
+    }
+
     fun shellCommand(command: String, path: File, env: Map<String, String> = emptyMap()) {
         ProcessBuilder()
             .environment(env)
