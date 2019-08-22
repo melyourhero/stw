@@ -9,6 +9,7 @@ import com.fasterxml.jackson.module.kotlin.readValue
 import com.github.ajalt.clikt.core.PrintMessage
 import mu.KLogging
 import org.apache.commons.io.FileUtils
+import org.apache.commons.io.FileUtils.getFile
 import org.github.mamoru1234.stw.ext.convertToFile
 import org.github.mamoru1234.stw.utils.getArrayNode
 import org.github.mamoru1234.stw.utils.getObjectNode
@@ -25,17 +26,17 @@ class CloudComposeService(
         if (dstComposeDir.isDirectory) {
             FileUtils.deleteDirectory(dstComposeDir)
         }
-        val composeNode = yamlMapper.readTree(FileUtils.getFile(srcComposeDir, "docker-compose-public.yml"))
+        val composeNode = yamlMapper.readTree(getFile(srcComposeDir, "docker-compose-public.yml"))
         val cassandraNode = getObjectNode(composeNode, arrayOf("services", "cassandra"))
         processCassandra(cassandraNode)
         processCloud(getObjectNode(composeNode, arrayOf("services", "cloud-master-node")))
         ensureProxy(composeNode)
         FileUtils.copyFile(
-                FileUtils.getFile(srcComposeDir, ".env"),
-                FileUtils.getFile(dstComposeDir, ".env")
+                getFile(srcComposeDir, ".env"),
+                getFile(dstComposeDir, ".env")
         )
         yamlMapper.writeValue(
-                FileUtils.getFile(dstComposeDir, "docker-compose.yml"),
+                getFile(dstComposeDir, "docker-compose.yml"),
                 composeNode
         )
     }
