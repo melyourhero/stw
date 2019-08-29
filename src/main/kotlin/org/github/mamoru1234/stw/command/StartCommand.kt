@@ -34,6 +34,7 @@ class StartCommand(
 
     private val skipBuild by option(help = "Skip build from sources step").flag(default = false)
     private val withClean by option(help = "With clean step").flag(default = false)
+    private val withUi by option(help = "With UI").flag(default = false)
 
 
     override fun run() {
@@ -42,5 +43,8 @@ class StartCommand(
             stwService.buildCloudSources(cloudPath, cloudComposeBuildDir, withClean)
         }
         stwService.startCloud(cloudComposeBuildDir, cloudComposeDir)
+        if (withUi) {
+            stwService.startUi(cloudComposeDir)
+        }
     }
 }

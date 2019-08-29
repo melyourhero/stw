@@ -63,8 +63,19 @@ class StwService(
         cloudApiClient.healthCheck().execRetry(20000)
     }
 
+    fun startUi(cloudDockerComposeDstDir: File) {
+        val env = mapOf(
+            "RIOT_API_PATH" to "${userConfig.machineIP}:8081",
+            "RIOT_UI_PATH" to "/"
+        )
+        val uiImage = userConfig.getPropertyWithDefault(UI_IMAGE)
+        val dockerImageName = userConfig.getDockerImageName(uiImage)
+        val command = "docker run -d -p 5690:80 --network=\"riotcloud_default\" $dockerImageName"
+        shellCommand(command, cloudDockerComposeDstDir, env)
+    }
+
     private fun cloudHealthFix() {
-        val healthSleep = userConfig.getProperty(CLOUD_HEALTH_SLEEP, "5000").toLong()
+        val healthSleep = userConfig.getPropertyWithDefault(CLOUD_HEALTH_SLEEP).toLong()
         log.info("Cloud health fix started")
         while (true) {
             log.debug("Checking cloud health...")

@@ -35,7 +35,7 @@ class DeviceService(
         if (sameAtoms.isNotEmpty()) {
             throw PrintMessage("Atom with same params is already running")
         }
-        val atomImage = userConfig.readValue(ATOM_IMAGE, "Enter atom image", ::nonEmpty)
+        val atomImage = userConfig.getPropertyWithDefault(ATOM_IMAGE)
         val atomOptions = DockerRunOptions(imageName = userConfig.getDockerImageName(atomImage)).apply {
             execOptions = "--cloudURL=$cloudUrl --orgId=$orgId --nodeId=$nodeId"
             network = "riotcloud_default"
@@ -51,10 +51,10 @@ class DeviceService(
             logger.info("Found csv adapter for node $nodeId")
             return existingCsvAdapter
         }
-        val imageName = userConfig.readValue(CSV_ADAPTER_IMAGE, "Csv adapter image", ::nonEmpty)
+        val imageName = userConfig.getPropertyWithDefault(CSV_ADAPTER_IMAGE)
         val atomIp = atomInfo.ips["riotcloud_default"]
         logger.debug("Runnning adapter for atom: ${atomInfo.name}, atomIP: $atomIp")
-        val fileSizeLimit = userConfig.getProperty(CLOUD_MAX_FILE_SIZE, "100MB")
+        val fileSizeLimit = userConfig.getPropertyWithDefault(CLOUD_MAX_FILE_SIZE)
         val adapterOptions = DockerRunOptions(imageName = userConfig.getDockerImageName(imageName)).apply {
             this.name = "csv_$nodeId"
             this.ports += port to "45678"

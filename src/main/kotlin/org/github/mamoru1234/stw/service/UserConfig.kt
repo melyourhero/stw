@@ -1,10 +1,10 @@
 package org.github.mamoru1234.stw.service
 
+import com.github.ajalt.clikt.core.PrintMessage
 import com.github.ajalt.clikt.output.TermUi
 import mu.KotlinLogging
 import org.apache.commons.io.FileUtils.getFile
 import org.github.mamoru1234.stw.utils.getWorkingDir
-import org.github.mamoru1234.stw.utils.nonEmpty
 import java.io.FileInputStream
 import java.io.FileWriter
 import java.net.InetSocketAddress
@@ -13,6 +13,18 @@ import java.util.*
 
 class UserConfig {
     private val log = KotlinLogging.logger {}
+
+    private val defaults = mapOf(
+        UI_IMAGE to "gravetti/gravetti-ui:2.1.2",
+        CSV_ADAPTER_IMAGE to "gravetti/engine-csv-adapter:2.0.5",
+        ATOM_IMAGE to "gravetti/gravetti-engine:2.0.7",
+        CLOUD_MAX_FILE_SIZE to "100MB",
+        CLOUD_HEALTH_SLEEP to "5000",
+        ATOM_DISABLE_ANALYTICS to "n",
+        CASSANDRA_XMX to "2048m",
+        CASSANDRA_XMS to "512m",
+        DOCKER_REGISTRY_URL to "docker-private.genesisnet.com"
+    )
 
     private val userProperties: Properties by lazy {
         log.info("Init of user properties")
@@ -45,6 +57,10 @@ class UserConfig {
         return userProperties.getProperty(name)
     }
 
+    fun getPropertyWithDefault(name: String): String {
+        return getProperty(name) ?: defaults[name] ?: throw PrintMessage("No default defined for $name")
+    }
+
     fun getProperty(name: String, defaultValue: String): String {
         return userProperties.getProperty(name) ?: defaultValue
     }
@@ -71,7 +87,7 @@ class UserConfig {
     }
 
     fun getDockerImageName(imageSuf: String): String {
-        val registry = readValue(DOCKER_REGISTRY_URL, "Enter docker registry", ::nonEmpty)
+        val registry = getPropertyWithDefault(DOCKER_REGISTRY_URL)
         return "$registry/$imageSuf"
     }
 

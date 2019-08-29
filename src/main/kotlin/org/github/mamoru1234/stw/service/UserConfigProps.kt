@@ -45,3 +45,5 @@ const val CSV_ADAPTER_DATA_PATH = "csv.adapter.data.path"
 
 const val CASSANDRA_XMX = "cloud.cassandra.xmx"
 const val CASSANDRA_XMS = "cloud.cassandra.xms"
+
+const val UI_IMAGE = "ui.image"
