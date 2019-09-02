@@ -21,8 +21,10 @@ import org.github.mamoru1234.stw.service.UserConfig
 import org.github.mamoru1234.stw.service.device.DeviceService
 import org.github.mamoru1234.stw.utils.getWorkingDir
 import org.github.mamoru1234.stw.utils.nonEmpty
+import org.springframework.stereotype.Component
 import java.util.*
 
+@Component
 class CsvCommand(
     private val dockerClient: DockerClient,
     private val deviceService: DeviceService,

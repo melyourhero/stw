@@ -9,10 +9,16 @@ import org.apache.commons.csv.CSVFormat
 import org.apache.commons.csv.CSVParser
 import org.github.mamoru1234.stw.ext.createPartFromFile
 import org.github.mamoru1234.stw.ext.execRetry
+import org.springframework.beans.factory.annotation.Qualifier
+import org.springframework.stereotype.Component
 import java.io.File
 import java.io.FileReader
 
-class CsvAdapterClient(private val mapper: ObjectMapper) {
+@Component
+class CsvAdapterClient(
+    @Qualifier("appJsonMapper")
+    private val mapper: ObjectMapper
+) {
     companion object: KLogging()
 
     fun attachDevice(

@@ -10,18 +10,21 @@ import org.github.mamoru1234.stw.ext.environment
 import org.github.mamoru1234.stw.ext.execRetry
 import org.github.mamoru1234.stw.ext.saveWait
 import org.github.mamoru1234.stw.ext.shellCommand
-import org.github.mamoru1234.stw.utils.getWorkingDir
 import org.github.mamoru1234.stw.utils.nonEmpty
+import org.springframework.beans.factory.annotation.Qualifier
+import org.springframework.stereotype.Service
 import java.io.File
 
 const val RUNNING_STATE = "running"
 
+@Service
 class StwService(
+    @Qualifier("appJsonMapper")
     private val mapper: ObjectMapper,
     private val userConfig: UserConfig,
     private val cloudComposeService: CloudComposeService,
     private val dockerClient: DockerClient
-    ) {
+) {
     private val log = KotlinLogging.logger {}
 
     fun buildCloudSources(cloudPathFile: File, cloudDockerComposeDstDir: File, withClean: Boolean): File {

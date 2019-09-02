@@ -3,8 +3,9 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 plugins {
     java
     application
-    kotlin("jvm") version "1.3.40"
-    id("org.springframework.boot") version "2.1.1.RELEASE"
+    kotlin("jvm") version "1.3.50"
+    kotlin("plugin.spring") version "1.3.50"
+    id("org.springframework.boot") version "2.1.7.RELEASE"
 }
 
 val jacksonVersion = "2.9.9"
@@ -24,7 +25,7 @@ dependencies {
     implementation(group = "com.squareup.retrofit2", name = "retrofit", version = retrofitVersion)
     implementation(group = "com.squareup.retrofit2", name = "converter-jackson", version = retrofitVersion)
     implementation(group = "commons-io", name = "commons-io", version = "2.6")
-    implementation(group = "org.springframework.boot", name = "spring-boot-starter-logging", version = "2.1.1.RELEASE")
+    implementation(group = "org.springframework.boot", name = "spring-boot-starter", version = "2.1.7.RELEASE")
     implementation(group = "com.fasterxml.jackson.core", name = "jackson-core", version = jacksonVersion)
     implementation(group = "com.fasterxml.jackson.module", name = "jackson-module-kotlin", version = jacksonVersion)
     implementation(group = "com.fasterxml.jackson.dataformat", name = "jackson-dataformat-yaml", version = jacksonVersion)

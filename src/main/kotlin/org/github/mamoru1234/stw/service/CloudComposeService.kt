@@ -14,11 +14,15 @@ import org.github.mamoru1234.stw.ext.convertToFile
 import org.github.mamoru1234.stw.utils.getArrayNode
 import org.github.mamoru1234.stw.utils.getObjectNode
 import org.github.mamoru1234.stw.utils.validateFile
+import org.springframework.beans.factory.annotation.Qualifier
+import org.springframework.stereotype.Service
 import java.io.File
 
+@Service
 class CloudComposeService(
-        private val yamlMapper: ObjectMapper,
-        private val userConfig: UserConfig
+    @Qualifier("appYamlMapper")
+    private val yamlMapper: ObjectMapper,
+    private val userConfig: UserConfig
 ) {
     companion object: KLogging()
 

@@ -5,12 +5,14 @@ import com.github.ajalt.clikt.output.TermUi
 import mu.KotlinLogging
 import org.apache.commons.io.FileUtils.getFile
 import org.github.mamoru1234.stw.utils.getWorkingDir
+import org.springframework.stereotype.Component
 import java.io.FileInputStream
 import java.io.FileWriter
 import java.net.InetSocketAddress
 import java.net.Socket
 import java.util.*
 
+@Component
 class UserConfig {
     private val log = KotlinLogging.logger {}
 

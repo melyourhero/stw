@@ -6,9 +6,13 @@ import org.github.mamoru1234.stw.ext.commandString
 import org.github.mamoru1234.stw.ext.saveWait
 import org.github.mamoru1234.stw.ext.shellCommand
 import org.github.mamoru1234.stw.ext.waitForString
+import org.springframework.beans.factory.annotation.Qualifier
+import org.springframework.stereotype.Component
 
+@Component
 class DockerClient(
-        private val objectMapper: ObjectMapper
+    @Qualifier("appJsonMapper")
+    private val objectMapper: ObjectMapper
 ) {
     fun pull(imageName: String) {
         val command = "docker pull $imageName"

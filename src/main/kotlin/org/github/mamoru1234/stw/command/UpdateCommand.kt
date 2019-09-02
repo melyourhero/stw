@@ -11,7 +11,9 @@ import org.github.mamoru1234.stw.service.CLOUD_PATH
 import org.github.mamoru1234.stw.service.StwService
 import org.github.mamoru1234.stw.service.UserConfig
 import org.github.mamoru1234.stw.utils.validateDir
+import org.springframework.stereotype.Component
 
+@Component
 class UpdateCommand(
     private val userConfig: UserConfig,
     private val stwService: StwService

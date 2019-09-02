@@ -12,7 +12,9 @@ import org.github.mamoru1234.stw.service.StwService
 import org.github.mamoru1234.stw.service.UserConfig
 import org.github.mamoru1234.stw.utils.getWorkingDir
 import org.github.mamoru1234.stw.utils.validateDir
+import org.springframework.stereotype.Component
 
+@Component
 class BuildCommand(
     private val userConfig: UserConfig,
     private val stwService: StwService

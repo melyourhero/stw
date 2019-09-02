@@ -9,7 +9,9 @@ import mu.KotlinLogging
 import org.apache.commons.io.FileUtils.getFile
 import org.github.mamoru1234.stw.service.StwService
 import org.github.mamoru1234.stw.utils.getWorkingDir
+import org.springframework.stereotype.Component
 
+@Component
 class DownCommand(
     private val stwService: StwService
 ): CliktCommand(help = "Shutdown local cloud", name = "down") {

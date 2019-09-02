@@ -5,9 +5,13 @@ import mu.KotlinLogging
 import org.github.mamoru1234.stw.client.docker.DockerClient
 import org.github.mamoru1234.stw.client.docker.DockerContainerInfo
 import org.github.mamoru1234.stw.client.docker.DockerRunOptions
-import org.github.mamoru1234.stw.service.*
-import org.github.mamoru1234.stw.utils.nonEmpty
+import org.github.mamoru1234.stw.service.ATOM_IMAGE
+import org.github.mamoru1234.stw.service.CLOUD_MAX_FILE_SIZE
+import org.github.mamoru1234.stw.service.CSV_ADAPTER_IMAGE
+import org.github.mamoru1234.stw.service.UserConfig
+import org.springframework.stereotype.Service
 
+@Service
 class DeviceService(
     private val dockerClient: DockerClient,
     private val userConfig: UserConfig
