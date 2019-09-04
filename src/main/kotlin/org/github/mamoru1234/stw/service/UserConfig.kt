@@ -19,6 +19,7 @@ class UserConfig {
     private val defaults = mapOf(
         UI_IMAGE to "gravetti/gravetti-ui:2.1.2",
         CSV_ADAPTER_IMAGE to "gravetti/engine-csv-adapter:2.0.5",
+        DEMO_ADAPTER_IMAGE to "gravetti/engine-demo-adapter:2.0.1",
         ATOM_IMAGE to "gravetti/gravetti-engine:2.0.7",
         CLOUD_MAX_FILE_SIZE to "100MB",
         CLOUD_HEALTH_SLEEP to "5000",

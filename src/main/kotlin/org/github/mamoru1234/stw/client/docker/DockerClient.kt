@@ -40,8 +40,8 @@ class DockerClient(
         }
 
         options.volumes.forEach {
-            (hostVolume, imageVolume) ->
-            command += " -v $hostVolume:$imageVolume"
+            volume ->
+            command += " -v $volume"
         }
 
         options.env.forEach {

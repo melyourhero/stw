@@ -73,7 +73,7 @@ class CsvCommand(
     }
 
     private fun getAtomInfo(nodeId: String): DockerContainerInfo {
-        return dockerClient.list().find { it.name == "atom_$nodeId" }
+        return dockerClient.list().find { it.name == "atom_node_$nodeId" }
             ?: throw PrintMessage("Atom with node id: $nodeId not found")
     }
 
@@ -85,7 +85,7 @@ class CsvCommand(
         val existingAtoms = deviceService.findAtomWithParams(dockerClient.list(), orgId, cloudUrl)
         if (existingAtoms.isNotEmpty()) {
             logger.info("Reusing existing atom instance")
-            return existingAtoms[0].name.substring(5)
+            return existingAtoms[0].name.substring(10)
         }
         deviceService.startAtom(orgId, cloudUrl, userNodeId)
         return userNodeId

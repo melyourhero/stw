@@ -5,11 +5,9 @@ import mu.KotlinLogging
 import org.github.mamoru1234.stw.client.docker.DockerClient
 import org.github.mamoru1234.stw.client.docker.DockerContainerInfo
 import org.github.mamoru1234.stw.client.docker.DockerRunOptions
-import org.github.mamoru1234.stw.service.ATOM_IMAGE
-import org.github.mamoru1234.stw.service.CLOUD_MAX_FILE_SIZE
-import org.github.mamoru1234.stw.service.CSV_ADAPTER_IMAGE
-import org.github.mamoru1234.stw.service.UserConfig
+import org.github.mamoru1234.stw.service.*
 import org.springframework.stereotype.Service
+import java.io.File
 
 @Service
 class DeviceService(
@@ -21,7 +19,7 @@ class DeviceService(
     fun findAtomWithParams(containers: List<DockerContainerInfo>,
                            orgId: String, cloudUrl: String): List<DockerContainerInfo> {
         return containers.filter {
-            it.name.startsWith("atom_")
+            it.name.startsWith("atom_node_")
                     && it.networkNames.contains("riotcloud_default")
                     && it.args.contains("--cloudURL=$cloudUrl")
                     && it.args.contains("--orgId=$orgId")
@@ -43,7 +41,7 @@ class DeviceService(
         val atomOptions = DockerRunOptions(imageName = userConfig.getDockerImageName(atomImage)).apply {
             execOptions = "--cloudURL=$cloudUrl --orgId=$orgId --nodeId=$nodeId"
             network = "riotcloud_default"
-            name = "atom_$nodeId"
+            name = "atom_node_$nodeId"
         }
         dockerClient.run(atomOptions)
     }
@@ -70,6 +68,26 @@ class DeviceService(
 
         dockerClient.run(adapterOptions)
         return dockerClient.list().find { it.name == "csv_$nodeId" }
+            ?: throw PrintMessage("Cannot start adapter for node $nodeId")
+    }
+
+    fun startDemoAdapter(nodeId: String, atomInfo: DockerContainerInfo, mappingsPath: File) {
+        val existingDemoAdapter = dockerClient.list().find { it.name == "atom_demo_$nodeId" }
+        if (existingDemoAdapter != null) {
+            logger.info("Found demo adapter for node $nodeId")
+            return
+        }
+        val imageName = userConfig.getPropertyWithDefault(DEMO_ADAPTER_IMAGE)
+        val atomIp = atomInfo.ips["riotcloud_default"]
+        logger.info("Running demo adapter for atom: ${atomInfo.name}, atomIP: $atomIp")
+        val adapterOptions = DockerRunOptions(userConfig.getDockerImageName(imageName)).apply {
+            this.name = "atom_demo_$nodeId"
+            this.network = "riotcloud_default"
+            this.env += "ADAPTER_ENGINE_HOST" to atomIp!!
+            this.volumes += "${mappingsPath.absolutePath}:/mappings:ro"
+        }
+        dockerClient.run(adapterOptions)
+        dockerClient.list().find { it.name == "atom_demo_$nodeId" }
             ?: throw PrintMessage("Cannot start adapter for node $nodeId")
     }
 }

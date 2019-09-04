@@ -2,11 +2,10 @@ package org.github.mamoru1234.stw.ext
 import mu.KotlinLogging
 import okhttp3.MediaType
 import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.Response
 import java.io.File
-import okhttp3.RequestBody
-
 
 
 private val log = KotlinLogging.logger {}
@@ -21,7 +20,8 @@ fun <T>Call<T>.execRetry(delay: Int = 20000): Response<T> {
         } catch (e: Exception) {
         }
         Thread.sleep(delay.toLong())
-        log.debug("Retrying call")
+        val request = this.request()
+        log.debug("Retrying call [${request.method()}]: ${request.url()}")
     }
 }
 

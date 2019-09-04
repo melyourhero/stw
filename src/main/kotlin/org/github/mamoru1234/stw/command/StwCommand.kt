@@ -12,10 +12,11 @@ class StwCommand(
     private val downCommand: DownCommand,
     private val startCommand: StartCommand,
     private val upCommand: UpCommand,
-    private val updateCommand: UpdateCommand
+    private val updateCommand: UpdateCommand,
+    private val deviceCommand: DeviceCommand
 ): NoRunCliktCommand() {
     @PostConstruct
     fun init() {
-        subcommands(buildCommand, csvCommand, downCommand, startCommand, upCommand, updateCommand)
+        subcommands(buildCommand, csvCommand, downCommand, startCommand, upCommand, updateCommand, deviceCommand)
     }
 }

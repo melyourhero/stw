@@ -7,7 +7,7 @@ class DockerRunOptions(
     var detached: Boolean = true
     var env: List<Pair<String, String>> = emptyList()
     var ports: List<Pair<String, String>> = emptyList()
-    var volumes: List<Pair<String, String>> = emptyList()
+    var volumes: List<String> = emptyList()
     var network: String? = null
     var execOptions: String? = null
 }
