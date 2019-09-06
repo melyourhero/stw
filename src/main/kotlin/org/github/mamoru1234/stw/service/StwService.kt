@@ -6,6 +6,7 @@ import mu.KotlinLogging
 import org.apache.commons.io.FileUtils.*
 import org.github.mamoru1234.stw.client.cloud.getCloudApiClient
 import org.github.mamoru1234.stw.client.docker.DockerClient
+import org.github.mamoru1234.stw.client.docker.DockerRunOptions
 import org.github.mamoru1234.stw.ext.environment
 import org.github.mamoru1234.stw.ext.execRetry
 import org.github.mamoru1234.stw.ext.saveWait
@@ -66,15 +67,18 @@ class StwService(
         cloudApiClient.healthCheck().execRetry(20000)
     }
 
-    fun startUi(cloudDockerComposeDstDir: File) {
-        val env = mapOf(
-            "RIOT_API_PATH" to "${userConfig.machineIP}:8081",
-            "RIOT_UI_PATH" to "/"
-        )
+    fun startUi(apiPath: String, uiPath: String, uiPort: String, name: String) {
         val uiImage = userConfig.getPropertyWithDefault(UI_IMAGE)
         val dockerImageName = userConfig.getDockerImageName(uiImage)
-        val command = "docker run -d -p 5690:80 --network=\"riotcloud_default\" $dockerImageName"
-        shellCommand(command, cloudDockerComposeDstDir, env)
+        val runOptions = DockerRunOptions(dockerImageName).apply {
+            this.ports += uiPort to "80"
+            this.network = "riotcloud_default"
+            this.name = name
+            this.env += "GRAVETTI_API_PATH" to apiPath
+            this.env += "GRAVETTI_PLATFORM_VERSION" to "2.5.0"
+            this.env += "GRAVETTI_UI_PATH" to uiPath
+        }
+        dockerClient.run(runOptions)
     }
 
     private fun cloudHealthFix() {

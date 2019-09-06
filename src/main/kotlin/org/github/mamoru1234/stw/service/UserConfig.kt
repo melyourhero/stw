@@ -17,7 +17,7 @@ class UserConfig {
     private val log = KotlinLogging.logger {}
 
     private val defaults = mapOf(
-        UI_IMAGE to "gravetti/gravetti-ui:2.1.2",
+        UI_IMAGE to "gravetti/gravetti-ui:2.1.3",
         CSV_ADAPTER_IMAGE to "gravetti/engine-csv-adapter:2.0.5",
         DEMO_ADAPTER_IMAGE to "gravetti/engine-demo-adapter:2.0.1",
         ATOM_IMAGE to "gravetti/gravetti-engine:2.0.7",

@@ -7,8 +7,8 @@ import javax.annotation.PostConstruct
 
 @Component
 class StwCommand(
+    private val attachCommand: AttachCommand,
     private val buildCommand: BuildCommand,
-    private val csvCommand: CsvCommand,
     private val downCommand: DownCommand,
     private val startCommand: StartCommand,
     private val upCommand: UpCommand,
@@ -17,6 +17,6 @@ class StwCommand(
 ): NoRunCliktCommand() {
     @PostConstruct
     fun init() {
-        subcommands(buildCommand, csvCommand, downCommand, startCommand, upCommand, updateCommand, deviceCommand)
+        subcommands(attachCommand, buildCommand, downCommand, startCommand, upCommand, updateCommand, deviceCommand)
     }
 }
