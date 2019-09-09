@@ -11,17 +11,18 @@ import java.io.File
 private val log = KotlinLogging.logger {}
 
 fun <T>Call<T>.execRetry(delay: Int = 20000): Response<T> {
+    val request = this.request()
     while (true) {
         try {
+            log.debug("Executing call [${request.method()}]: ${request.url()}")
             val response = this.clone().execute()
             if (response.isSuccessful) {
                 return response
             }
         } catch (e: Exception) {
         }
+        log.debug("Failed call [${request.method()}]: ${request.url()} retrying...")
         Thread.sleep(delay.toLong())
-        val request = this.request()
-        log.debug("Retrying call [${request.method()}]: ${request.url()}")
     }
 }
 
