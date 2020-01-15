@@ -30,19 +30,15 @@ class CloudComposeService(
         if (dstComposeDir.isDirectory) {
             FileUtils.deleteDirectory(dstComposeDir)
         }
-        val composeNode = yamlMapper.readTree(getFile(srcComposeDir, "docker-compose-public.yml"))
+        FileUtils.copyDirectory(srcComposeDir, dstComposeDir)
+        val dockerComposePublicYamlFile = getFile(dstComposeDir, "docker-compose-public.yml")
+        val composeNode = yamlMapper.readTree(dockerComposePublicYamlFile)
         val cassandraNode = getObjectNode(composeNode, arrayOf("services", "cassandra"))
         processCassandra(cassandraNode)
         processCloud(getObjectNode(composeNode, arrayOf("services", "cloud-master-node")))
         ensureProxy(composeNode)
-        FileUtils.copyFile(
-                getFile(srcComposeDir, ".env"),
-                getFile(dstComposeDir, ".env")
-        )
-        yamlMapper.writeValue(
-                getFile(dstComposeDir, "docker-compose.yml"),
-                composeNode
-        )
+        val dockerComposeYamlFile = getFile(dstComposeDir, "docker-compose.yml")
+        yamlMapper.writeValue(dockerComposeYamlFile, composeNode)
     }
 
     private fun parseEnvironment(rawEnv: ArrayNode): Map<String, String> = rawEnv.map {

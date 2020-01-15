@@ -20,7 +20,7 @@ class UserConfig {
         UI_IMAGE to "gravetti/gravetti-ui:2.1.3",
         CSV_ADAPTER_IMAGE to "gravetti/engine-csv-adapter:2.0.5",
         DEMO_ADAPTER_IMAGE to "gravetti/engine-demo-adapter:2.0.1",
-        ATOM_IMAGE to "gravetti/gravetti-engine:2.0.7",
+        ATOM_IMAGE to "gravetti/gravetti-engine:2.4.4",
         CLOUD_MAX_FILE_SIZE to "100MB",
         CLOUD_HEALTH_SLEEP to "5000",
         ATOM_DISABLE_ANALYTICS to "n",

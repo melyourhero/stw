@@ -12,7 +12,7 @@ private fun getNode(node: JsonNode, path: Array<String>): JsonNode = path.fold(n
 fun getArrayNode(node: JsonNode, path: Array<String>): ArrayNode {
     val targetNode = getNode(node, path)
     if (!targetNode.isArray) {
-        throw PrintMessage("node: $path is not array")
+        throw PrintMessage("Node: $path is not array")
     }
     return targetNode as ArrayNode
 }
@@ -20,7 +20,7 @@ fun getArrayNode(node: JsonNode, path: Array<String>): ArrayNode {
 fun getObjectNode(node: JsonNode, path: Array<String>): ObjectNode {
     val targetNode = getNode(node, path)
     if (!targetNode.isObject) {
-        throw PrintMessage("node: $path is not object")
+        throw PrintMessage("Node: $path is not object")
     }
     return targetNode as ObjectNode
 }
