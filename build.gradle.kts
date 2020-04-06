@@ -11,10 +11,9 @@ plugins {
 val jacksonVersion = "2.9.9"
 val retrofitVersion = "2.6.0"
 
-group = "org.github.mamoru1234.stw"
 version = "1.0-SNAPSHOT"
 application {
-    mainClassName = "org.github.mamoru1234.stw.ApplicationKt"
+    mainClassName = "org.gravetti.stw.main.ApplicationKt"
 }
 
 repositories {
